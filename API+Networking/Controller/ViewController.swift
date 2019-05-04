@@ -29,10 +29,10 @@ class ViewController: UIViewController {
             guard let data = data else { return }
 
             let decoder = JSONDecoder()
+            //TODO: - What is the right way to do this?
             let dogImage = try! decoder.decode(DogImage.self, from: data)
             
             guard let imageUrl = URL(string: dogImage.message) else { return }
-            print(imageUrl)
             let task = URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
                 guard let data = data else { return }
                 let downloadedImage = UIImage(data: data)
@@ -40,10 +40,8 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.imageView.image = downloadedImage
                 }
-                
             })
             task.resume()
-            
         }
         task.resume()
     }
