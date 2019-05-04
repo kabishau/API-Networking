@@ -9,28 +9,19 @@ class ViewController: UIViewController {
         
         let randomImageEndpoint = DogAPI.EndPoint.randomImageFromAllDogsCollection.url
         
-        let task = URLSession.shared.dataTask(with: randomImageEndpoint) { (data, response, error) in
-            guard let data = data else { return }
-            
-            let decoder = JSONDecoder()
-            //TODO: - What is the right way to do this?
-            let dogImage = try! decoder.decode(DogImage.self, from: data)
-            
-            guard let imageUrl = URL(string: dogImage.message) else { return }
-            
-            /*
-            DogAPI.requestImageFile(url: imageUrl, completionHandler: { (image, error) in
-                //TODO: - How to handle Error properly?
-                DispatchQueue.main.async {
-                    self.imageView.image = image
-                }
-            })
-            */
-            
-            // not sure how this works... it replaces the code above
-            DogAPI.requestImageFile(url: imageUrl, completionHandler: self.handleImageFileRespose(image:error:))
+        DogAPI.requestRandomImage(from: randomImageEndpoint) { (dogImage, error) in
+            self.handleRandomImageResponse(dogImage: dogImage, error: error)
         }
-        task.resume()
+        
+        // same thing as above - it's cleaner but I need to get used to this syntax
+        //DogAPI.requestRandomImage(from: randomImageEndpoint, completion: handleRandomImageResponse(dogImage:error:))
+    }
+    
+    func handleRandomImageResponse(dogImage: DogImage?, error: Error?) {
+        guard let dogImage = dogImage, let imageUrl = URL(string: dogImage.message) else { return }
+        // passing func into completionHandler - syntax looks weird...
+        // do func and completion have same type?
+        DogAPI.requestImageFile(url: imageUrl, completion: self.handleImageFileRespose(image:error:))
     }
     
     func handleImageFileRespose(image: UIImage?, error: Error?) {
