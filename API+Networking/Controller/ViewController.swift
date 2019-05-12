@@ -3,15 +3,23 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    let breeds: [String] = ["greyhound", "poodle"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        
+        /*
         let randomImageEndpoint = DogAPI.EndPoint.randomImageFromAllDogsCollection.url
         
         DogAPI.requestRandomImage(from: randomImageEndpoint) { (dogImage, error) in
             self.handleRandomImageResponse(dogImage: dogImage, error: error)
         }
+        */
         
         // same thing as above - it's cleaner but I need to get used to this syntax
         //DogAPI.requestRandomImage(from: randomImageEndpoint, completion: handleRandomImageResponse(dogImage:error:))
@@ -32,3 +40,31 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController: UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return breeds[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        let randomImageEndpoint = DogAPI.EndPoint.randomImageFromAllDogsCollection.url
+        
+        DogAPI.requestRandomImage(from: randomImageEndpoint) { (dogImage, error) in
+            self.handleRandomImageResponse(dogImage: dogImage, error: error)
+        }
+    }
+}
+
+extension ViewController: UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return breeds.count
+    }
+    
+    
+}
