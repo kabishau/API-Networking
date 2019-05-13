@@ -5,7 +5,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var pickerView: UIPickerView!
     
-    let breeds: [String] = ["greyhound", "poodle", "bluetick", "boxer", "mastiff"]
+    var breeds: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,24 +13,27 @@ class ViewController: UIViewController {
         pickerView.dataSource = self
         pickerView.delegate = self
         
-        /*
-        let randomImageEndpoint = DogAPI.EndPoint.randomImageFromAllDogsCollection.url
+        let url = DogAPI.EndPoint.listAllBreeds.url
         
-        DogAPI.requestRandomImage(from: randomImageEndpoint) { (dogImage, error) in
-            self.handleRandomImageResponse(dogImage: dogImage, error: error)
+        DogAPI.requestBreedsList(from: url, completion: handleBreedListResponse(breeds:error:))
+    
+    }
+    
+    func handleBreedListResponse(breeds: [String]?, error: Error?) {
+        guard let breeds = breeds else { return }
+        self.breeds = breeds
+        
+        DispatchQueue.main.async {
+            self.pickerView.reloadAllComponents()
         }
-        */
-        
-        // same thing as above - it's cleaner but I need to get used to this syntax
-        //DogAPI.requestRandomImage(from: randomImageEndpoint, completion: handleRandomImageResponse(dogImage:error:))
+
     }
     
     func handleRandomImageResponse(dogImage: DogImage?, error: Error?) {
         
         guard let dogImage = dogImage,
               let imageUrl = URL(string: dogImage.message) else { return }
-        // passing func into completionHandler - syntax looks weird...
-        // do func and completion have same type?
+
         DogAPI.requestImageFile(url: imageUrl, completion: self.handleImageFileRespose(image:error:))
     }
     

@@ -7,6 +7,7 @@ class DogAPI {
         
         case randomImageFromAllDogsCollection
         case randomImageForBreed(String)
+        case listAllBreeds
         
         // computed property kind of do the same as rawValues but helps with building dynamic URL
         var stringValue: String {
@@ -15,6 +16,8 @@ class DogAPI {
                 return "https://dog.ceo/api/breeds/image/random"
             case .randomImageForBreed(let breed):
                 return "https://dog.ceo/api/breed/\(breed)/images/random"
+            case .listAllBreeds:
+                return "https://dog.ceo/api/breeds/list/all"
             }
         }
         
@@ -37,6 +40,27 @@ class DogAPI {
             
             completion(dogImage, nil)
             
+        }
+        task.resume()
+    }
+    
+    class func requestBreedsList(from url: URL, completion: @escaping ([String]?, Error?) -> Void) {
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            guard let data = data else {
+                completion([], error)
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            do {
+                let breedListResponse = try decoder.decode(BreedListResponse.self, from: data)
+                let breedList = breedListResponse.message.keys.map({$0})
+                completion(breedList, nil)
+            } catch {
+                completion([], error)
+            }
         }
         task.resume()
     }
