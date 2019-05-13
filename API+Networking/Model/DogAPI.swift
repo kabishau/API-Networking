@@ -3,11 +3,23 @@ import UIKit
 
 class DogAPI {
     
-    enum EndPoint: String {
-        case randomImageFromAllDogsCollection = "https://dog.ceo/api/breeds/image/random"
+    enum EndPoint {
+        
+        case randomImageFromAllDogsCollection
+        case randomImageForBreed(String)
+        
+        // computed property kind of do the same as rawValues but helps with building dynamic URL
+        var stringValue: String {
+            switch self {
+            case .randomImageFromAllDogsCollection:
+                return "https://dog.ceo/api/breeds/image/random"
+            case .randomImageForBreed(let breed):
+                return "https://dog.ceo/api/breed/\(breed)/images/random"
+            }
+        }
         
         var url: URL {
-            return URL(string: self.rawValue)!
+            return URL(string: self.stringValue)!
         }
     }
     

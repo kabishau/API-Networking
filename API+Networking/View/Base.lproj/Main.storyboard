@@ -19,13 +19,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mbI-2B-Kk8">
-                                <rect key="frame" x="20" y="20" width="335" height="647"/>
+                                <rect key="frame" x="20" y="20" width="335" height="637"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BuT-Cj-0Th">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="216"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="216" id="Cyg-Qw-06D"/>
+                                        </constraints>
                                     </pickerView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0m9-Ok-2td">
-                                        <rect key="frame" x="0.0" y="216" width="335" height="431"/>
+                                        <rect key="frame" x="0.0" y="216" width="335" height="421"/>
                                     </imageView>
                                 </subviews>
                             </stackView>
@@ -33,7 +36,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="mbI-2B-Kk8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="IEb-QP-03r"/>
-                            <constraint firstItem="mbI-2B-Kk8" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Lkh-A9-3ce"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="mbI-2B-Kk8" secondAttribute="bottomMargin" constant="10" id="Lkh-A9-3ce"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mbI-2B-Kk8" secondAttribute="trailing" constant="20" id="P7W-vu-Tsf"/>
                             <constraint firstItem="mbI-2B-Kk8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VWI-n2-smg"/>
                         </constraints>

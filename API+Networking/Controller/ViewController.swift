@@ -5,7 +5,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var pickerView: UIPickerView!
     
-    let breeds: [String] = ["greyhound", "poodle"]
+    let breeds: [String] = ["greyhound", "poodle", "bluetick", "boxer", "mastiff"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,9 @@ class ViewController: UIViewController {
     }
     
     func handleRandomImageResponse(dogImage: DogImage?, error: Error?) {
-        guard let dogImage = dogImage, let imageUrl = URL(string: dogImage.message) else { return }
+        
+        guard let dogImage = dogImage,
+              let imageUrl = URL(string: dogImage.message) else { return }
         // passing func into completionHandler - syntax looks weird...
         // do func and completion have same type?
         DogAPI.requestImageFile(url: imageUrl, completion: self.handleImageFileRespose(image:error:))
@@ -48,9 +50,9 @@ extension ViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        let randomImageEndpoint = DogAPI.EndPoint.randomImageFromAllDogsCollection.url
+        let url = DogAPI.EndPoint.randomImageForBreed(breeds[row]).url
         
-        DogAPI.requestRandomImage(from: randomImageEndpoint) { (dogImage, error) in
+        DogAPI.requestRandomImage(from: url) { (dogImage, error) in
             self.handleRandomImageResponse(dogImage: dogImage, error: error)
         }
     }
